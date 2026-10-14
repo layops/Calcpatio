@@ -168,19 +168,21 @@ const NavBar = ({onMobileClose, openMobile}) => {
             </div>
 
             {/* Mobile Logout Button */}
-            <Hidden lgUp>
-                <Divider/>
-                <Box p={2}>
-                    <Button
-                        fullWidth
-                        className={classes.logoutButton}
-                        onClick={() => dispatch(logout())}
-                    >
-                        <LogOut className={classes.logoutIcon} size="18"/>
-                        Güvenli Çıkış Yap
-                    </Button>
-                </Box>
-            </Hidden>
+            {user && (
+                <Hidden lgUp>
+                    <Divider/>
+                    <Box p={2}>
+                        <Button
+                            fullWidth
+                            className={classes.logoutButton}
+                            onClick={() => dispatch(logout())}
+                        >
+                            <LogOut className={classes.logoutIcon} size="18"/>
+                            Güvenli Çıkış Yap
+                        </Button>
+                    </Box>
+                </Hidden>
+            )}
         </Box>
     );
 

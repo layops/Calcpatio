@@ -103,33 +103,33 @@ const TopBar = ({ className, onMobileNavOpen, ...rest }) => {
                     </Box>
                 </Hidden>
 
-                {/* User Greeting */}
+                {/* User Greeting & Logout */}
                 {user && (
-                    <Hidden xsDown>
-                        <Box mr={2} textAlign="right">
-                            <Typography variant="body2" style={{fontWeight: 700, color: '#0F172A', lineHeight: 1.2}}>
-                                {user.nameSurname || user.username}
-                            </Typography>
-                            <Typography variant="caption" style={{color: '#64748B'}}>
-                                Yetkili Kullanıcı
-                            </Typography>
-                        </Box>
-                    </Hidden>
+                    <>
+                        <Hidden xsDown>
+                            <Box mr={2} textAlign="right">
+                                <Typography variant="body2" style={{fontWeight: 700, color: '#0F172A', lineHeight: 1.2}}>
+                                    {user.nameSurname || user.username}
+                                </Typography>
+                                <Typography variant="caption" style={{color: '#64748B'}}>
+                                    Yetkili Kullanıcı
+                                </Typography>
+                            </Box>
+                        </Hidden>
+                        <Hidden mdDown>
+                            <Tooltip title="Güvenli Çıkış Yap" arrow>
+                                <IconButton
+                                    className={classes.logoutBtn}
+                                    onClick={handleLogout}
+                                    size="medium"
+                                    aria-label="Çıkış Yap"
+                                >
+                                    <PowerSettingsNewIcon/>
+                                </IconButton>
+                            </Tooltip>
+                        </Hidden>
+                    </>
                 )}
-
-                {/* Logout Button */}
-                <Hidden mdDown>
-                    <Tooltip title="Güvenli Çıkış Yap" arrow>
-                        <IconButton
-                            className={classes.logoutBtn}
-                            onClick={handleLogout}
-                            size="medium"
-                            aria-label="Çıkış Yap"
-                        >
-                            <PowerSettingsNewIcon/>
-                        </IconButton>
-                    </Tooltip>
-                </Hidden>
 
                 {/* Mobile Menu Toggle */}
                 <Hidden lgUp>

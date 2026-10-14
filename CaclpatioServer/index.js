@@ -86,5 +86,21 @@ app.listen(port, () => {
     console.log("==========================================");
     console.log(" Calcpatio Server running on port: " + port);
     console.log(" SQLite database ready: " + db.name);
+
+    // Render uyku modunu önlemek için keep-alive mekanizması
+    const keepAliveUrl = process.env.RENDER_EXTERNAL_URL || process.env.SERVER_URL;
+    if (keepAliveUrl) {
+        const INTERVAL_MS = 3 * 60 * 1000; // 3 dakika
+        console.log(" Keep-Alive aktif: " + keepAliveUrl + " (Her 3 dk)");
+        setInterval(async () => {
+            try {
+                const response = await fetch(keepAliveUrl);
+                console.log(`[Keep-Alive] Ping başarılı: ${response.status} (${new Date().toLocaleTimeString()})`);
+            } catch (error) {
+                console.error("[Keep-Alive] Ping gönderilemedi:", error.message);
+            }
+        }, INTERVAL_MS);
+    }
     console.log("==========================================");
 });
+
