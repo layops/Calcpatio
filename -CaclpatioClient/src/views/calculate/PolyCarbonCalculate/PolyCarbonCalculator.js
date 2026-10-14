@@ -15,6 +15,7 @@ import {
     Table,
     TableBody,
     TableCell,
+    TableContainer,
     TableHead,
     TableRow,
     TextField,
@@ -37,7 +38,10 @@ const useStyles = makeStyles((theme) => ({
         background: 'linear-gradient(135deg, #0F172A 0%, #1E293B 100%)',
         color: '#FFFFFF',
         borderRadius: 16,
-        padding: theme.spacing(3),
+        padding: theme.spacing(2),
+        [theme.breakpoints.up('sm')]: {
+            padding: theme.spacing(3)
+        },
         marginBottom: theme.spacing(3),
         boxShadow: '0 10px 25px -5px rgba(15, 23, 42, 0.3)',
         border: '1px solid #334155'
@@ -61,27 +65,38 @@ const useStyles = makeStyles((theme) => ({
         fontWeight: 700,
         textTransform: 'uppercase',
         letterSpacing: '0.05em',
-        color: '#64748B',
+        color: theme.palette.text.secondary,
         marginBottom: theme.spacing(1.5),
         display: 'flex',
         alignItems: 'center',
         gap: 8
     },
     sectionCard: {
-        backgroundColor: '#FFFFFF',
+        backgroundColor: theme.palette.background.paper,
         borderRadius: 14,
         padding: theme.spacing(2.5),
-        border: '1px solid #E2E8F0',
-        height: '100%'
+        border: `1px solid ${theme.palette.divider}`,
+        height: '100%',
+        transition: 'background-color 0.25s ease, border-color 0.25s ease'
     },
     calculateCard: {
         marginTop: theme.spacing(3),
         borderRadius: 16,
-        border: '1px solid #E2E8F0',
-        boxShadow: '0 4px 20px -2px rgba(15, 23, 42, 0.06)'
+        backgroundColor: theme.palette.background.paper,
+        border: `1px solid ${theme.palette.divider}`,
+        boxShadow: theme.palette.type === 'dark' ? '0 4px 20px -2px rgba(0, 0, 0, 0.4)' : '0 4px 20px -2px rgba(15, 23, 42, 0.06)'
     },
     tableHeader: {
-        backgroundColor: '#F8FAFC'
+        backgroundColor: theme.palette.type === 'dark' ? '#1E293B' : '#F8FAFC'
+    },
+    rowMaterialName: {
+        fontWeight: 600,
+        color: theme.palette.text.primary
+    },
+    countChip: {
+        fontWeight: 700,
+        backgroundColor: theme.palette.type === 'dark' ? '#1F2937' : '#F1F5F9',
+        color: theme.palette.text.primary
     },
     categoryChip: {
         fontWeight: 700,
@@ -508,65 +523,67 @@ const PolyCarbonCalculator = ({className, ...rest}) => {
                             roofType="Polikarbon"
                         />
 
-                        {/* Material Table */}
-                        <Table>
-                            <TableHead className={classes.tableHeader}>
-                                <TableRow>
-                                    <TableCell>Kategori</TableCell>
-                                    <TableCell>Malzeme Adı</TableCell>
-                                    <TableCell align="right">Boyut (cm)</TableCell>
-                                    <TableCell align="right">Adet</TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {rows.map((row, index) => (
-                                    <TableRow hover key={index}>
-                                        <TableCell style={{width: 120}}>
-                                            {getCategoryChip(row.name)}
-                                        </TableCell>
-                                        <TableCell style={{fontWeight: 600, color: '#0F172A'}}>
-                                            {row.name}
-                                        </TableCell>
-                                        <TableCell align="right" style={{fontFamily: 'monospace', fontWeight: 700, color: '#2563EB', fontSize: '0.9rem'}}>
-                                            {row.size != null ? Number(row.size).toFixed(2) : '-'}
-                                        </TableCell>
-                                        <TableCell align="right">
-                                            <Chip size="small" label={`${row.count} Adet`} style={{fontWeight: 700, backgroundColor: '#F1F5F9'}}/>
-                                        </TableCell>
+                        {/* Material Table with horizontal scroll on mobile */}
+                        <TableContainer>
+                            <Table>
+                                <TableHead className={classes.tableHeader}>
+                                    <TableRow>
+                                        <TableCell>Kategori</TableCell>
+                                        <TableCell>Malzeme Adı</TableCell>
+                                        <TableCell align="right">Boyut (cm)</TableCell>
+                                        <TableCell align="right">Adet</TableCell>
                                     </TableRow>
-                                ))}
-                                {Boolean(values.lambCount) && (
-                                    <TableRow hover>
-                                        <TableCell>{getCategoryChip('Led Spot')}</TableCell>
-                                        <TableCell style={{fontWeight: 600}}>Led Spot</TableCell>
-                                        <TableCell align="right" style={{color: '#94A3B8'}}>-</TableCell>
-                                        <TableCell align="right">
-                                            <Chip size="small" label={`${values.lambCount} Adet`} style={{fontWeight: 700, backgroundColor: '#FEF08A', color: '#854D0E'}}/>
-                                        </TableCell>
-                                    </TableRow>
-                                )}
-                                {Boolean(values.ledStrip) && (
-                                    <TableRow hover>
-                                        <TableCell>{getCategoryChip('Led Şerit')}</TableCell>
-                                        <TableCell style={{fontWeight: 600}}>Led Şerit</TableCell>
-                                        <TableCell align="right" style={{color: '#94A3B8'}}>-</TableCell>
-                                        <TableCell align="right">
-                                            <Chip size="small" label={`${values.ledStrip} Adet`} style={{fontWeight: 700, backgroundColor: '#FEF08A', color: '#854D0E'}}/>
-                                        </TableCell>
-                                    </TableRow>
-                                )}
-                                {Boolean(values.angaraj) && (
-                                    <TableRow hover>
-                                        <TableCell>{getCategoryChip('Ankraj')}</TableCell>
-                                        <TableCell style={{fontWeight: 600}}>Ankraj</TableCell>
-                                        <TableCell align="right" style={{color: '#94A3B8'}}>-</TableCell>
-                                        <TableCell align="right">
-                                            <Chip size="small" label={`${values.angaraj} Adet`} style={{fontWeight: 700, backgroundColor: '#F1F5F9'}}/>
-                                        </TableCell>
-                                    </TableRow>
-                                )}
-                            </TableBody>
-                        </Table>
+                                </TableHead>
+                                <TableBody>
+                                    {rows.map((row, index) => (
+                                        <TableRow hover key={index}>
+                                            <TableCell style={{width: 120}}>
+                                                {getCategoryChip(row.name)}
+                                            </TableCell>
+                                            <TableCell className={classes.rowMaterialName}>
+                                                {row.name}
+                                            </TableCell>
+                                            <TableCell align="right" style={{fontFamily: 'monospace', fontWeight: 700, color: '#2563EB', fontSize: '0.9rem'}}>
+                                                {row.size != null ? Number(row.size).toFixed(2) : '-'}
+                                            </TableCell>
+                                            <TableCell align="right">
+                                                <Chip size="small" label={`${row.count} Adet`} className={classes.countChip}/>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                                    {Boolean(values.lambCount) && (
+                                        <TableRow hover>
+                                            <TableCell>{getCategoryChip('Led Spot')}</TableCell>
+                                            <TableCell className={classes.rowMaterialName}>Led Spot</TableCell>
+                                            <TableCell align="right" style={{color: '#94A3B8'}}>-</TableCell>
+                                            <TableCell align="right">
+                                                <Chip size="small" label={`${values.lambCount} Adet`} style={{fontWeight: 700, backgroundColor: '#FEF08A', color: '#854D0E'}}/>
+                                            </TableCell>
+                                        </TableRow>
+                                    )}
+                                    {Boolean(values.ledStrip) && (
+                                        <TableRow hover>
+                                            <TableCell>{getCategoryChip('Led Şerit')}</TableCell>
+                                            <TableCell className={classes.rowMaterialName}>Led Şerit</TableCell>
+                                            <TableCell align="right" style={{color: '#94A3B8'}}>-</TableCell>
+                                            <TableCell align="right">
+                                                <Chip size="small" label={`${values.ledStrip} Adet`} style={{fontWeight: 700, backgroundColor: '#FEF08A', color: '#854D0E'}}/>
+                                            </TableCell>
+                                        </TableRow>
+                                    )}
+                                    {Boolean(values.angaraj) && (
+                                        <TableRow hover>
+                                            <TableCell>{getCategoryChip('Ankraj')}</TableCell>
+                                            <TableCell className={classes.rowMaterialName}>Ankraj</TableCell>
+                                            <TableCell align="right" style={{color: '#94A3B8'}}>-</TableCell>
+                                            <TableCell align="right">
+                                                <Chip size="small" label={`${values.angaraj} Adet`} className={classes.countChip}/>
+                                            </TableCell>
+                                        </TableRow>
+                                    )}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
 
                         {/* Customer & Note & Excel Section */}
                         <Box mt={4} pt={3} borderTop="1px solid #E2E8F0">

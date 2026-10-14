@@ -2,51 +2,55 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Box, Grid, makeStyles, Typography} from '@material-ui/core';
 
-const useStyles = makeStyles((theme) => ({
-    card: {
-        background: '#FFFFFF',
-        borderRadius: 14,
-        padding: theme.spacing(2, 2.5),
-        border: '1px solid #E2E8F0',
-        boxShadow: '0 2px 10px rgba(15, 23, 42, 0.04)',
-        display: 'flex',
-        alignItems: 'center',
-        gap: theme.spacing(2),
-        transition: 'transform 0.2s ease, box-shadow 0.2s ease',
-        '&:hover': {
-            transform: 'translateY(-2px)',
-            boxShadow: '0 8px 24px rgba(15, 23, 42, 0.08)'
+const useStyles = makeStyles((theme) => {
+    const isDark = theme.palette.type === 'dark';
+
+    return {
+        card: {
+            background: theme.palette.background.paper,
+            borderRadius: 14,
+            padding: theme.spacing(2, 2.5),
+            border: `1px solid ${theme.palette.divider}`,
+            boxShadow: isDark ? '0 2px 10px rgba(0, 0, 0, 0.3)' : '0 2px 10px rgba(15, 23, 42, 0.04)',
+            display: 'flex',
+            alignItems: 'center',
+            gap: theme.spacing(2),
+            transition: 'transform 0.2s ease, box-shadow 0.2s ease, background-color 0.25s ease',
+            '&:hover': {
+                transform: 'translateY(-2px)',
+                boxShadow: isDark ? '0 8px 24px rgba(0, 0, 0, 0.5)' : '0 8px 24px rgba(15, 23, 42, 0.08)'
+            }
+        },
+        iconBox: {
+            width: 48,
+            height: 48,
+            borderRadius: 12,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexShrink: 0
+        },
+        label: {
+            fontSize: '0.75rem',
+            fontWeight: 700,
+            textTransform: 'uppercase',
+            letterSpacing: '0.05em',
+            color: theme.palette.text.secondary,
+            marginBottom: 2
+        },
+        value: {
+            fontSize: '1.45rem',
+            fontWeight: 800,
+            color: theme.palette.text.primary,
+            lineHeight: 1.2
+        },
+        subtext: {
+            fontSize: '0.75rem',
+            color: theme.palette.text.secondary,
+            fontWeight: 500
         }
-    },
-    iconBox: {
-        width: 48,
-        height: 48,
-        borderRadius: 12,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexShrink: 0
-    },
-    label: {
-        fontSize: '0.75rem',
-        fontWeight: 700,
-        textTransform: 'uppercase',
-        letterSpacing: '0.05em',
-        color: '#64748B',
-        marginBottom: 2
-    },
-    value: {
-        fontSize: '1.45rem',
-        fontWeight: 800,
-        color: '#0F172A',
-        lineHeight: 1.2
-    },
-    subtext: {
-        fontSize: '0.75rem',
-        color: '#94A3B8',
-        fontWeight: 500
-    }
-}));
+    };
+});
 
 const CalculationSummaryCards = ({
     width,

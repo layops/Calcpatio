@@ -31,72 +31,81 @@ const items = [
     }
 ];
 
-const useStyles = makeStyles((theme) => ({
-    mobileDrawer: {
-        width: 270
-    },
-    desktopDrawer: {
-        width: 270,
-        top: 64,
-        height: 'calc(100% - 64px)',
-        borderRight: '1px solid #E2E8F0',
-        backgroundColor: '#FFFFFF'
-    },
-    userBox: {
-        padding: theme.spacing(3, 2),
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        background: 'linear-gradient(180deg, #F8FAFC 0%, #FFFFFF 100%)',
-        borderBottom: '1px solid #E2E8F0'
-    },
-    avatar: {
-        width: 58,
-        height: 58,
-        fontSize: '1.25rem',
-        fontWeight: 700,
-        background: 'linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%)',
-        color: '#FFFFFF',
-        boxShadow: '0 4px 14px 0 rgba(37, 99, 235, 0.35)',
-        marginBottom: theme.spacing(1.2)
-    },
-    userName: {
-        fontWeight: 700,
-        fontSize: '0.975rem',
-        color: '#0F172A',
-        textAlign: 'center'
-    },
-    roleChip: {
-        marginTop: 6,
-        height: 20,
-        fontSize: '0.675rem',
-        fontWeight: 700,
-        backgroundColor: 'rgba(37, 99, 235, 0.1)',
-        color: '#2563EB'
-    },
-    infoCard: {
-        margin: theme.spacing(2),
-        padding: theme.spacing(2),
-        borderRadius: 14,
-        backgroundColor: '#F8FAFC',
-        border: '1px solid #E2E8F0',
-        textAlign: 'center'
-    },
-    logoutButton: {
-        justifyContent: 'flex-start',
-        textTransform: 'none',
-        padding: '10px 16px',
-        color: '#EF4444',
-        borderRadius: 10,
-        fontWeight: 600,
-        '&:hover': {
-            backgroundColor: '#FEE2E2'
+const useStyles = makeStyles((theme) => {
+    const isDark = theme.palette.type === 'dark';
+
+    return {
+        mobileDrawer: {
+            width: 270,
+            backgroundColor: theme.palette.background.paper,
+            borderRight: `1px solid ${theme.palette.divider}`
+        },
+        desktopDrawer: {
+            width: 270,
+            top: 64,
+            height: 'calc(100% - 64px)',
+            borderRight: `1px solid ${theme.palette.divider}`,
+            backgroundColor: theme.palette.background.paper,
+            transition: 'background-color 0.25s ease, border-color 0.25s ease'
+        },
+        userBox: {
+            padding: theme.spacing(3, 2),
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            background: isDark
+                ? 'linear-gradient(180deg, #111827 0%, #1F2937 100%)'
+                : 'linear-gradient(180deg, #F8FAFC 0%, #FFFFFF 100%)',
+            borderBottom: `1px solid ${theme.palette.divider}`
+        },
+        avatar: {
+            width: 58,
+            height: 58,
+            fontSize: '1.25rem',
+            fontWeight: 700,
+            background: 'linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%)',
+            color: '#FFFFFF',
+            boxShadow: '0 4px 14px 0 rgba(37, 99, 235, 0.35)',
+            marginBottom: theme.spacing(1.2)
+        },
+        userName: {
+            fontWeight: 700,
+            fontSize: '0.975rem',
+            color: theme.palette.text.primary,
+            textAlign: 'center'
+        },
+        roleChip: {
+            marginTop: 6,
+            height: 20,
+            fontSize: '0.675rem',
+            fontWeight: 700,
+            backgroundColor: isDark ? 'rgba(59, 130, 246, 0.2)' : 'rgba(37, 99, 235, 0.1)',
+            color: isDark ? '#60A5FA' : '#2563EB'
+        },
+        infoCard: {
+            margin: theme.spacing(2),
+            padding: theme.spacing(2),
+            borderRadius: 14,
+            backgroundColor: isDark ? '#1F2937' : '#F8FAFC',
+            border: `1px solid ${theme.palette.divider}`,
+            textAlign: 'center'
+        },
+        logoutButton: {
+            justifyContent: 'flex-start',
+            textTransform: 'none',
+            padding: '10px 16px',
+            color: '#EF4444',
+            borderRadius: 10,
+            fontWeight: 600,
+            '&:hover': {
+                backgroundColor: isDark ? 'rgba(239, 68, 68, 0.15)' : '#FEE2E2'
+            }
+        },
+        logoutIcon: {
+            marginRight: 10
         }
-    },
-    logoutIcon: {
-        marginRight: 10
-    }
-}));
+    };
+});
 
 const getInitials = (name = '') => {
     if (!name) return 'CP';
@@ -119,7 +128,7 @@ const NavBar = ({onMobileClose, openMobile}) => {
         }
     }, [location.pathname]);
 
-    const userName = (user && user.nameSurname) || (user && user.username) || 'Yönetici';
+    const userName = (user && user.nameSurname) || (user && user.username) || 'Hesaplama Uzmanı';
     const initials = getInitials(userName);
 
     const content = (
@@ -132,12 +141,12 @@ const NavBar = ({onMobileClose, openMobile}) => {
                 <Typography className={classes.userName}>
                     {userName}
                 </Typography>
-                <Chip label="SİSTEM YÖNETİCİSİ" size="small" className={classes.roleChip}/>
+                <Chip label="PRO KULLANICI" size="small" className={classes.roleChip}/>
             </div>
 
             {/* Navigation Menu */}
             <Box p={2} flexGrow={1}>
-                <Typography variant="overline" style={{color: '#94A3B8', padding: '0 8px', display: 'block', marginBottom: 8}}>
+                <Typography variant="overline" color="textSecondary" style={{padding: '0 8px', display: 'block', marginBottom: 8}}>
                     MODÜLLER
                 </Typography>
                 <List disablePadding>
@@ -154,11 +163,11 @@ const NavBar = ({onMobileClose, openMobile}) => {
 
             {/* Bottom Suite Card */}
             <div className={classes.infoCard}>
-                <Typography variant="caption" style={{fontWeight: 700, color: '#0F172A', display: 'block'}}>
+                <Typography variant="caption" style={{fontWeight: 700, display: 'block'}}>
                     CALCPATIO SUITE
                 </Typography>
-                <Typography variant="caption" style={{color: '#64748B', display: 'block', marginTop: 2}}>
-                    Alüminyum & Veranda Kesim Motoru v2.0
+                <Typography variant="caption" color="textSecondary" style={{display: 'block', marginTop: 2}}>
+                    Alüminyum & Veranda Kesim Motoru
                 </Typography>
             </div>
 

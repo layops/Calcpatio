@@ -1,6 +1,6 @@
 import {createStyles, makeStyles} from '@material-ui/core';
 
-const useStyles = makeStyles(() => createStyles({
+const useStyles = makeStyles((theme) => createStyles({
     '@global': {
         '*': {
             boxSizing: 'border-box',
@@ -14,25 +14,26 @@ const useStyles = makeStyles(() => createStyles({
             width: '100%'
         },
         body: {
-            backgroundColor: '#F8FAFC',
+            backgroundColor: theme.palette.background.default,
             fontFamily: '"Plus Jakarta Sans", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-            color: '#0F172A',
+            color: theme.palette.text.primary,
             height: '100%',
-            width: '100%'
+            width: '100%',
+            transition: 'background-color 0.25s ease, color 0.25s ease'
         },
         '::-webkit-scrollbar': {
             width: 8,
             height: 8
         },
         '::-webkit-scrollbar-track': {
-            background: '#F1F5F9'
+            background: theme.palette.type === 'dark' ? '#0B0F19' : '#F1F5F9'
         },
         '::-webkit-scrollbar-thumb': {
-            background: '#CBD5E1',
+            background: theme.palette.type === 'dark' ? '#374151' : '#CBD5E1',
             borderRadius: 4
         },
         '::-webkit-scrollbar-thumb:hover': {
-            background: '#94A3B8'
+            background: theme.palette.type === 'dark' ? '#4B5563' : '#94A3B8'
         },
         a: {
             textDecoration: 'none'
@@ -46,7 +47,6 @@ const useStyles = makeStyles(() => createStyles({
 
 const GlobalStyles = () => {
     useStyles();
-
     return null;
 };
 

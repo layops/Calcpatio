@@ -4,13 +4,17 @@ import { Box, Chip, makeStyles, Typography, Button, ButtonGroup } from '@materia
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        background: 'linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%)',
+        background: theme.palette.type === 'dark' ? theme.palette.background.paper : 'linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%)',
         borderRadius: 16,
-        border: '1px solid #E2E8F0',
-        padding: theme.spacing(3),
+        border: `1px solid ${theme.palette.divider}`,
+        padding: theme.spacing(2),
+        [theme.breakpoints.up('sm')]: {
+            padding: theme.spacing(3)
+        },
         position: 'relative',
         overflow: 'hidden',
-        boxShadow: '0 4px 20px -2px rgba(15, 23, 42, 0.05)'
+        boxShadow: theme.palette.type === 'dark' ? '0 4px 20px -2px rgba(0, 0, 0, 0.4)' : '0 4px 20px -2px rgba(15, 23, 42, 0.05)',
+        transition: 'background-color 0.25s ease, border-color 0.25s ease'
     },
     header: {
         display: 'flex',
@@ -52,12 +56,18 @@ const useStyles = makeStyles((theme) => ({
     },
     canvasContainer: {
         width: '100%',
-        minHeight: 380,
+        minHeight: 300,
+        [theme.breakpoints.up('sm')]: {
+            minHeight: 380
+        },
         backgroundColor: '#090D16',
         backgroundImage: 'radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px)',
         backgroundSize: '24px 24px',
         borderRadius: 14,
-        padding: theme.spacing(2),
+        padding: theme.spacing(1.5),
+        [theme.breakpoints.up('sm')]: {
+            padding: theme.spacing(2)
+        },
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -83,7 +93,7 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
         marginTop: theme.spacing(2),
         paddingTop: theme.spacing(1.5),
-        borderTop: '1px solid #E2E8F0',
+        borderTop: `1px solid ${theme.palette.divider}`,
         flexWrap: 'wrap',
         gap: theme.spacing(1.5)
     },
@@ -108,11 +118,11 @@ const useStyles = makeStyles((theme) => ({
         borderColor: '#2563EB !important'
     },
     viewBtnInactive: {
-        backgroundColor: '#FFFFFF',
-        color: '#475569',
-        borderColor: '#CBD5E1',
+        backgroundColor: theme.palette.type === 'dark' ? '#1F2937' : '#FFFFFF',
+        color: theme.palette.text.secondary,
+        borderColor: theme.palette.divider,
         '&:hover': {
-            backgroundColor: '#F1F5F9'
+            backgroundColor: theme.palette.type === 'dark' ? 'rgba(255, 255, 255, 0.06)' : '#F1F5F9'
         }
     },
     infoNotice: {
