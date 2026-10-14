@@ -6,13 +6,14 @@ node_modules/
 build/
 */build/
 
-# Environment variables
+# Environment variables & secrets
 .env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
 */.env
+SERVER_CREDENTIALS.txt
 
 # SQLite databases
 *.sqlite
