@@ -13,7 +13,7 @@ import {
     makeStyles,
     Typography
 } from '@material-ui/core';
-import {Layers, LogOut, Settings as SettingsIcon, Square} from 'react-feather';
+import {Layers, LogOut, Square} from 'react-feather';
 import NavItem from './NavItem';
 import {useDispatch, useSelector} from "react-redux";
 import {logout} from "../../../redux/actions/authAction";
@@ -28,11 +28,6 @@ const items = [
         href: '/glassCalculate',
         icon: Square,
         title: 'Cam Hesaplama'
-    },
-    {
-        href: '/settings',
-        icon: SettingsIcon,
-        title: 'Ayarlar'
     }
 ];
 
