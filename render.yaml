@@ -1,0 +1,38 @@
+services:
+  # 1. Backend REST API (Node.js Express)
+  - type: web
+    name: calcpatio-api
+    runtime: node
+    plan: free
+    rootDir: CaclpatioServer
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: JWT_TOKEN
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: SECRET_PASSWORD
+        sync: false
+      - key: CORS_ORIGIN
+        sync: false
+
+  # 2. Frontend İstemci (React SPA - Static Site)
+  - type: web
+    name: calcpatio-client
+    runtime: static
+    rootDir: -CaclpatioClient
+    buildCommand: npm install && npm run build
+    staticPublishPath: build
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: NODE_OPTIONS
+        value: --openssl-legacy-provider
+      - key: REACT_APP_API_URL
+        sync: false
