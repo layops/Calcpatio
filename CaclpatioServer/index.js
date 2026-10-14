@@ -30,14 +30,34 @@ app.set('trust proxy', 1);
 app.use(helmet());
 app.use(express.json({limit: '10kb'}));
 
-// CORS_ORIGIN: comma separated list, e.g. "http://localhost:3000"
-const allowedOrigins = (process.env.CORS_ORIGIN || '')
+// CORS configuration
+const corsEnv = process.env.CORS_ORIGIN || '';
+const allowedOrigins = corsEnv
     .split(',')
     .map(origin => origin.trim())
     .filter(Boolean);
-if (allowedOrigins.length === 0)
-    console.warn("CORS_ORIGIN is not set; API accepts requests from any origin.");
-app.use(cors(allowedOrigins.length > 0 ? {origin: allowedOrigins} : undefined));
+
+if (allowedOrigins.length === 0 || allowedOrigins.includes('*')) {
+    console.log("CORS: Accepting requests from all origins");
+    app.use(cors({
+        origin: true,
+        credentials: true
+    }));
+    app.options('*', cors());
+} else {
+    console.log("CORS: Allowed origins:", allowedOrigins);
+    app.use(cors({
+        origin: (origin, callback) => {
+            if (!origin) return callback(null, true);
+            if (allowedOrigins.includes(origin) || allowedOrigins.some(o => origin.endsWith(o.replace(/^\*/, '')))) {
+                return callback(null, true);
+            }
+            return callback(new Error('CORS policy: Origin not allowed'));
+        },
+        credentials: true
+    }));
+    app.options('*', cors());
+}
 
 // routes
 app.use(loggerMiddleware);
